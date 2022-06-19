@@ -2,11 +2,14 @@ from ortools.linear_solver import pywraplp
 from ortools.init import pywrapinit
 
 
-def main():
+def linear_prog_1():
+
     # Create the linear solver with the GLOP backend.
     solver = pywraplp.Solver.CreateSolver('GLOP')
 
-    # Create the variables x and y.
+    # Create the variables x and y and domain.
+    # 0 <= x <= 1
+    # 0 <= y <= 2
     x = solver.NumVar(0, 1, 'x')
     y = solver.NumVar(0, 2, 'y')
 
@@ -25,6 +28,7 @@ def main():
     objective.SetCoefficient(y, 1)
     objective.SetMaximization()
 
+    # Run the algorithm.
     solver.Solve()
 
     print('Solution:')
@@ -34,10 +38,11 @@ def main():
 
 
 if __name__ == '__main__':
+
     pywrapinit.CppBridge.InitLogging('basic_example.py')
     cpp_flags = pywrapinit.CppFlags()
     cpp_flags.logtostderr = True
     cpp_flags.log_prefix = False
     pywrapinit.CppBridge.SetFlags(cpp_flags)
 
-    main()
+    linear_prog_1()
